@@ -3,19 +3,13 @@
 ## Overview
 
 This repository contains the Python scripts and supporting documentation for
-Study 1 of a research project investigating phraseological complexity in
+Study 1 of the research project investigating phraseological complexity in
 argumentative and scientific writing produced by expert writers and learners
 of English as a foreign language (EFL).
 
-The study examines phraseological complexity from a register-sensitive
-perspective. Rather than treating phraseological complexity as a stable
-property of writing, it investigates whether existing measures can capture
-systematic differences between registers and whether EFL learners can adapt
-their phraseological choices to different communicative contexts.
-
 ## Research Focus
 
-The project addresses four related questions:
+The project addresses four related research questions:
 
 1. To what extent and in what ways can the selected measures capture patterns
    of phraseological complexity across registers?
@@ -31,7 +25,7 @@ The current scripts operationalize phraseological units as dependency-based
 two-word combinations involving three grammatical relations:
 
 - adjectival modifiers (`amod`);
-- adverbial modifiers (`advmod`);
+- adverbial modifiers (`advmod_v`);
 - direct objects (`dobj`).
 
 The project investigates several dimensions of phraseological complexity,
@@ -39,12 +33,10 @@ including:
 
 - **phraseological diversity**, represented by the numbers of combination
   types and tokens and their type–token ratios;
-- **phraseological association**, represented by pointwise mutual information
+- **phraseological sophistication**, represented by pointwise mutual information
   (MI) scores;
-- **phraseological dispersion**, based on the distribution of combinations
-  across sections of the reference corpus;
-- **phraseological density**, represented by the frequency of relevant
-  phraseological units relative to text length.
+- **phraseological density**, represented by the frequency of phraseological units
+- relative to text length and to all combinations of the relevant grammatical type.
 
 To reduce the influence of differences in text length, several measures are
 calculated using a moving-window procedure. The current implementation uses
