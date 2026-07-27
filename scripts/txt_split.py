@@ -1,30 +1,52 @@
 from pathlib import Path
 
-def split_to_about_500kb(src: Path, out_dir: Path,
-                         target_kb: int = 500, slack_kb: int = 12,
-                         encoding: str = "utf-8"):
+
+def split_to_about_500kb(
+    src: Path,
+    out_dir: Path,
+    target_kb: int = 100000,
+    slack_kb: int = 12,
+    encoding: str = "utf-8"
+):
     """
-    将单个文本文件按“约500KB”切分到 out_dir。
-    target_kb: 目标大小（KB）
-    slack_kb: 允许的上浮空间（KB），用于更贴近目标而不频繁换新文件。
-              实际硬上限 = target_kb + slack_kb
+    Split a single text file into chunks of approximately the target size
+    and save them in ``out_dir``.
+
+    Parameters
+    ----------
+    src : Path
+        Path to the source text file.
+    out_dir : Path
+        Directory in which the split files will be saved.
+    target_kb : int, default=100000
+        Target size of each output file, in kilobytes.
+    slack_kb : int, default=12
+        Additional size allowance, in kilobytes. This makes it possible to
+        keep files close to the target size without creating a new file too
+        frequently. The actual maximum size is ``target_kb + slack_kb``.
+    encoding : str, default="utf-8"
+        Character encoding used to read and encode the source file.
     """
     out_dir.mkdir(parents=True, exist_ok=True)
     base = src.stem
 
     target_bytes = target_kb * 1024
-    hard_max_bytes = (target_kb + slack_kb) * 1024  # 例如 500KB 目标 + 12KB 余量 = 512KB 上限
+    hard_max_bytes = (target_kb + slack_kb) * 1024
+    # For example, a 500 KB target plus a 12 KB allowance gives a 512 KB limit.
 
     part = 1
     current_bytes = 0
     w = None
 
     def open_new():
+        """Close the current output file and open a new file chunk."""
         nonlocal part, current_bytes, w
+
         if w:
             w.close()
+
         dst = out_dir / f"{base}_p{part:03d}.txt"
-        w = dst.open("wb")  # 直接按字节写，避免重复编码
+        w = dst.open("wb")  # Write bytes directly to avoid repeated encoding.
         part += 1
         current_bytes = 0
 
@@ -32,18 +54,26 @@ def split_to_about_500kb(src: Path, out_dir: Path,
         for line in f:
             b = line.encode(encoding)
 
-            # 如果当前还没打开文件，或者再写这一行就会超过“硬上限”，就开新文件
-            if w is None or (current_bytes > 0 and current_bytes + len(b) > hard_max_bytes):
+            # Open a new file if no output file is currently open or if writing
+            # the next line would cause the current file to exceed the hard limit.
+            if (
+                w is None
+                or (
+                    current_bytes > 0
+                    and current_bytes + len(b) > hard_max_bytes
+                )
+            ):
                 open_new()
 
-            # 若这一行太长（大于硬上限），为了尽量保持可读性，这里作为单独一份写入；
-            # 极少数情况下这份会略高于硬上限（通常不会发生，除非单行>512KB）
+            # If a single line is larger than the hard limit, write it as a
+            # separate chunk to preserve readability. In this rare case, the
+            # output file may exceed the hard limit.
             if len(b) > hard_max_bytes and current_bytes == 0:
                 w.write(b)
                 open_new()
                 continue
 
-            # 正常写入
+            # Write the line to the current output file.
             w.write(b)
             current_bytes += len(b)
 
@@ -52,13 +82,14 @@ def split_to_about_500kb(src: Path, out_dir: Path,
 
 
 if __name__ == "__main__":
-    # 改成你的路径
-    input_dir = Path(r"E:\Corpora\COCA\COCA_Aca\ori")
-    output_dir = Path(r"E:\Corpora\COCA\COCA_Aca\split")  # 所有分片放在同一个大文件夹
+    # Replace these paths with the appropriate local directories.
+    input_dir = Path(r"D:/ENCOW16AX/content")
+    output_dir = Path(r"D:/ENCOW16AX/split")
+    # All split files will be stored in the same output directory.
 
-    # 批量处理所有 .txt
+    # Process all .txt files in the input directory.
     for src in sorted(input_dir.glob("*.txt")):
-        print(f"处理: {src.name}")
+        print(f"Processing: {src.name}")
         split_to_about_500kb(src, output_dir)
 
-    print("完成！")
+    print("Processing complete!")
