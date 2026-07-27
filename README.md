@@ -35,8 +35,7 @@ including:
   types and tokens and their type–token ratios;
 - **phraseological sophistication**, represented by pointwise mutual information
   (MI) scores;
-- **phraseological density**, represented by the frequency of phraseological units
-- relative to text length and to all combinations of the relevant grammatical type.
+- **phraseological density**, represented by the frequency of phraseological unitsrelative to text length and to all combinations of the relevant grammatical type. 
 
 To reduce the influence of differences in text length, several measures are
 calculated using a moving-window procedure. The current implementation uses
