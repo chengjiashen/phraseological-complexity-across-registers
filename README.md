@@ -7,7 +7,7 @@ Study 1 of the research project investigating phraseological complexity in
 argumentative and scientific writing produced by expert writers and learners
 of English as a foreign language (EFL).
 
-## Research Focus
+## Research Questions
 
 The project addresses four related research questions:
 
@@ -19,7 +19,7 @@ The project addresses four related research questions:
    phraseological complexity?
 4. How does this register sensitivity vary across EFL proficiency levels?
 
-## Analytical Framework
+## Methodology
 
 The current scripts operationalize phraseological units as dependency-based
 two-word combinations involving three grammatical relations:
