@@ -85,30 +85,6 @@ for filepath in LOCRA_filepaths:
                                 freq_collo_2 = ENCOW_lemma_dict[collo_2]
                                 PMI = math.log2(freq_collocation * total_lemma / (freq_collo_1 * freq_collo_2))
                                 win_MIs_advmod.append(PMI)
-                # if tokens[n].pos_ == "ADV" and tokens[n].dep_ == "advmod" and tokens[n].head.pos_ == "ADJ" and tokens[n].is_alpha and tokens[n].head.is_alpha:
-                #     collocation = f"{tokens[n].lemma_} {tokens[n].head.lemma_}"
-                #     if collocation in ENCOW_advmod_dict.keys():
-                #         if ENCOW_advmod_dict[collocation] >= 5:
-                #             collo_1 = tokens[n].lemma_
-                #             collo_2 = tokens[n].head.lemma_
-                #             if collo_1 in ENCOW_lemma_dict.keys() and collo_2 in ENCOW_lemma_dict.keys():
-                #                 freq_collocation = ENCOW_advmod_dict[collocation]
-                #                 freq_collo_1 = ENCOW_lemma_dict[collo_1]
-                #                 freq_collo_2 = ENCOW_lemma_dict[collo_2]
-                #                 PMI = math.log2(freq_collocation * total_lemma / (freq_collo_1 * freq_collo_2))
-                #                 win_MIs_advmod.append(PMI)
-                # if tokens[n].pos_ == "ADV" and tokens[n].dep_ == "advmod" and tokens[n].head.pos_ == "ADV" and tokens[n].is_alpha and tokens[n].head.is_alpha:
-                #     collocation = f"{tokens[n].lemma_} {tokens[n].head.lemma_}"
-                #     if collocation in ENCOW_advmod_dict.keys():
-                #         if ENCOW_advmod_dict[collocation] >= 5:
-                #             collo_1 = tokens[n].lemma_
-                #             collo_2 = tokens[n].head.lemma_
-                #             if collo_1 in ENCOW_lemma_dict.keys() and collo_2 in ENCOW_lemma_dict.keys():
-                #                 freq_collocation = ENCOW_advmod_dict[collocation]
-                #                 freq_collo_1 = ENCOW_lemma_dict[collo_1]
-                #                 freq_collo_2 = ENCOW_lemma_dict[collo_2]
-                #                 PMI = math.log2(freq_collocation * total_lemma / (freq_collo_1 * freq_collo_2))
-                #                 win_MIs_advmod.append(PMI)
                 if tokens[n].pos_ == "NOUN" and tokens[n].dep_ == "dobj" and tokens[n].head.pos_ == "VERB" and tokens[n].is_alpha and tokens[n].head.is_alpha:
                     collocation = f"{tokens[n].head.lemma_} {tokens[n].lemma_}"
                     if collocation in ENCOW_dobj_dict.keys():
@@ -121,24 +97,30 @@ for filepath in LOCRA_filepaths:
                                 freq_collo_2 = ENCOW_lemma_dict[collo_2]
                                 PMI = math.log2(freq_collocation * total_lemma / (freq_collo_1 * freq_collo_2))
                                 win_MIs_dobj.append(PMI)
-
+            if win_MIs_amod:
+                MIs_amod.append(float(numpy.mean(win_MIs_amod)))
+            if win_MIs_advmod:
+                MIs_advmod.append(float(numpy.mean(win_MIs_advmod)))
+            if win_MIs_dobj:
+                MIs_dobj.append(float(numpy.mean(win_MIs_dobj)))
             index_start += 10
-        if win_MIs_amod:
-            MULTED_MIs_amod.append(float(numpy.mean(win_MIs_amod)))
-        if win_MIs_advmod:
-            MULTED_MIs_advmod.append(float(numpy.mean(win_MIs_advmod)))
-        if win_MIs_dobj:
-            MULTED_MIs_dobj.append(float(numpy.mean(win_MIs_dobj)))
 
-# print(MULTED_MIs_amod[:30])
+        if MIs_amod:
+            MULTED_MIs_amod.append(float(numpy.mean(MIs_amod)))
+
+        if MIs_advmod:
+            MULTED_MIs_advmod.append(float(numpy.mean(MIs_advmod)))
+
+        if MIs_dobj:
+            MULTED_MIs_dobj.append(float(numpy.mean(MIs_dobj)))
+
+
 print(MULTED_MIs_amod)
 print(numpy.mean(MULTED_MIs_amod))
 print(numpy.std(MULTED_MIs_amod), "\n")
-# print(MULTED_MIs_advmod[:30])
 print(MULTED_MIs_advmod)
 print(numpy.mean(MULTED_MIs_advmod))
 print(numpy.std(MULTED_MIs_advmod), "\n")
-# print(MULTED_MIs_dobj[:30])
 print(MULTED_MIs_dobj)
 print(numpy.mean(MULTED_MIs_dobj))
 print(numpy.std(MULTED_MIs_dobj))
